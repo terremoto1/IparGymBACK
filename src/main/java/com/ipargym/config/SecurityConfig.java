@@ -53,6 +53,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v2/usuarios/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v2/actividades").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v2/actividades/admin/listado").hasRole("ADMINISTRADOR")
+                        .requestMatchers(HttpMethod.PUT, "/api/v2/actividades/**").hasRole("ADMINISTRADOR")
                         .requestMatchers(HttpMethod.POST, "/api/v2/actividades", "/api/v2/actividades/**").hasRole("ADMINISTRADOR")
                         .requestMatchers("/api/v2/**").authenticated()
                         .anyRequest().permitAll())
@@ -80,7 +82,7 @@ public class SecurityConfig {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration cors = new CorsConfiguration();
         cors.setAllowedOrigins(List.of("http://localhost:4200"));
-        cors.setAllowedMethods(List.of("GET", "POST", "DELETE", "OPTIONS"));
+        cors.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         cors.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         cors.setAllowCredentials(true);
 
@@ -89,3 +91,4 @@ public class SecurityConfig {
         return source;
     }
 }
+

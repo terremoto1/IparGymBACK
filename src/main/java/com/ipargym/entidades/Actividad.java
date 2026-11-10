@@ -70,4 +70,11 @@ public class Actividad {
     public List<Reserva> getReservas() {
         return reservas;
     }
+    public void setNombre(String nombre) { this.nombre = nombre; }
+    public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
+    public void setMonitor(String monitor) { this.monitor = monitor; }
+    public void setFechaHora(LocalDateTime fechaHora) { this.fechaHora = fechaHora; }
+    public void setDuracionMinutos(int duracionMinutos) { this.duracionMinutos = duracionMinutos; }
+    public void setPlazas(int plazas) { this.plazas = plazas; }
 }
+

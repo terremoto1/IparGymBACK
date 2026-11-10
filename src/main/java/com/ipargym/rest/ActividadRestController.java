@@ -35,6 +35,17 @@ public class ActividadRestController {
     public ActividadDetalleDto obtenerDetalle(@PathVariable Long id) {
         return actividadService.obtenerDetalle(id);
     }
+    @GetMapping("/admin/listado")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
+    public List<ActividadDetalleDto> listarTodas() {
+        return actividadService.listarTodas();
+    }
+
+    @org.springframework.web.bind.annotation.PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
+    public ActividadDetalleDto actualizar(@PathVariable Long id, @Valid @RequestBody ActividadCrearEntradaDto entrada) {
+        return actividadService.actualizar(id, entrada);
+    }
 
     /** Reto opcional: el rol se valida a partir de la autoridad del JWT. */
     @PostMapping
@@ -44,3 +55,4 @@ public class ActividadRestController {
         return ResponseEntity.created(URI.create("/api/v2/actividades/" + creada.id())).body(creada);
     }
 }
+

@@ -53,6 +53,28 @@ public class ActividadService {
         return aDetalleDto(actividad);
     }
 
+    /** Devuelve todas las actividades para la gestión de administración. */
+    @Transactional(readOnly = true)
+    public List<ActividadDetalleDto> listarTodas() {
+        return actividadRepository.findAll().stream()
+                .sorted(java.util.Comparator.comparing(Actividad::getFechaHora))
+                .map(this::aDetalleDto)
+                .toList();
+    }
+
+    /** Actualiza una actividad existente con los datos validados del DTO. */
+    @Transactional
+    public ActividadDetalleDto actualizar(Long id, ActividadCrearEntradaDto entrada) {
+        Actividad actividad = actividadRepository.findById(id)
+                .orElseThrow(() -> new ReservaException("La actividad no existe", HttpStatus.NOT_FOUND));
+        actividad.setNombre(entrada.nombre());
+        actividad.setDescripcion(entrada.descripcion());
+        actividad.setMonitor(entrada.monitor());
+        actividad.setFechaHora(entrada.fechaHora());
+        actividad.setDuracionMinutos(entrada.duracionMinutos());
+        actividad.setPlazas(entrada.plazas());
+        return aDetalleDto(actividadRepository.save(actividad));
+    }
     private ActividadListadoDto aListadoDto(Actividad actividad) {
         return new ActividadListadoDto(
                 actividad.getId(),
@@ -82,4 +104,5 @@ public class ActividadService {
         return Math.max(0, actividad.getPlazas() - (int) reservasActuales);
     }
 }
+
 
